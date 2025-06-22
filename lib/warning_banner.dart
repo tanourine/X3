@@ -1,3 +1,4 @@
+// lib/warning_banner.dart
 import 'package:flutter/material.dart';
 
 /// صفحتك لتنبيه الإيرادات

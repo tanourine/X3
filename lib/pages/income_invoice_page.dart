@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../warning_banner.dart';
+import 'package:tanourine_app/warning_banner.dart';
 
 class IncomeInvoicePage extends StatefulWidget {
   @override
