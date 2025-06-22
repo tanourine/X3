@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ExcelExportPage extends StatefulWidget {
-  @override
+  const ExcelExportPage({Key? key}) : super(key: key);
   _ExcelExportPageState createState() => _ExcelExportPageState();
 }
 

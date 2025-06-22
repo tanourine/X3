@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
-// استورد هنا جميع الصفحات الموجودة في مجلّد lib
+// استورد كل صفحاتك هنا:
 import 'home_page.dart';
 import 'income_invoice_page.dart';
+import 'expense_invoice_page.dart';
 import 'request_money_page.dart';
 import 'tools_check_page.dart';
 import 'request_review_page.dart';
 import 'excel_export_page.dart';
-import 'warning_banner.dart';            // إذا كان اسم الصف المعرّف فيه هو WarningBanner
-import 'upload_tools_images_page.dart'; // يعرّف AdminToolsUploadPage
+import 'warning_banner.dart';
+import 'upload_tools_images_page.dart';
 import 'location_tracking_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,15 +29,16 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/home',
       routes: {
-        '/home':                (context) => HomePage(),
-        '/income':              (context) => IncomeInvoicePage(),
-        '/request-money':       (context) => RequestMoneyPage(),
-        '/tools-check':         (context) => ToolsCheckPage(),
-        '/money-review':        (context) => RequestReviewPage(),
-        '/excel-export':        (context) => ExcelExportPage(),
-        '/income-warning':      (context) => WarningBanner(),            // أو WarningBannerPage() حسب الملف
-        '/admin-tools':         (context) => AdminToolsUploadPage(),
-        '/location-tracking':   (context) => LocationTrackingPage(),
+        '/home':              (c) => const HomePage(),
+        '/income':            (c) => const IncomeInvoicePage(),
+        '/expense':           (c) => const ExpenseInvoicePage(),
+        '/request-money':     (c) => const RequestMoneyPage(),
+        '/tools-check':       (c) => const ToolsCheckPage(),
+        '/money-review':      (c) => const RequestReviewPage(),
+        '/excel-export':      (c) => const ExcelExportPage(),
+        '/income-warning':    (c) => const WarningBannerPage(),
+        '/admin-tools':       (c) => const AdminToolsUploadPage(),
+        '/location-tracking': (c) => const LocationTrackingPage(),
       },
     );
   }

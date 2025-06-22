@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LocationTrackingPage extends StatefulWidget {
-  @override
+  const LocationTrackingPage({Key? key}) : super(key: key);
   _LocationTrackingPageState createState() => _LocationTrackingPageState();
 }
 

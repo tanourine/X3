@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class IncomeWarningBanner extends StatelessWidget {
+  const WarningBannerPage({Key? key}) : super(key: key);
   final String technicianName;
   final bool showWarning;
 

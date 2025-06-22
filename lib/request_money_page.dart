@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RequestMoneyPage extends StatefulWidget {
-  @override
+  const RequestMoneyPage({Key? key}) : super(key: key);
   _RequestMoneyPageState createState() => _RequestMoneyPageState();
 }
 
