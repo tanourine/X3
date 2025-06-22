@@ -1,29 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ExpenseInvoicePage extends StatefulWidget {
-  const ExpenseInvoicePage({Key? key}) : super(key: key);
+  @override
   _ExpenseInvoicePageState createState() => _ExpenseInvoicePageState();
 }
 
 class _ExpenseInvoicePageState extends State<ExpenseInvoicePage> {
+  final TextEditingController descriptionController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
-  final TextEditingController detailsController = TextEditingController();
   DateTime selectedDate = DateTime.now();
-
-  void submitExpense() {
-    if (amountController.text.isEmpty || detailsController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('يرجى تعبئة جميع الحقول')),
-      );
-      return;
-    }
-
-    // تنفيذ رفع البيانات أو إرسالها إلى تليجرام
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('تم رفع فاتورة المصاريف')),
-    );
-    Navigator.pop(context);
-  }
 
   Future<void> pickDate() async {
     DateTime? date = await showDatePicker(
@@ -33,10 +18,21 @@ class _ExpenseInvoicePageState extends State<ExpenseInvoicePage> {
       lastDate: DateTime(2100),
     );
     if (date != null) {
-      setState(() {
-        selectedDate = date;
-      });
+      setState(() => selectedDate = date);
     }
+  }
+
+  void submitExpense() {
+    if (descriptionController.text.isEmpty || amountController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('يرجى تعبئة كل الحقول')),
+      );
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('تم رفع فاتورة المصاريف بنجاح')),
+    );
+    Navigator.pop(context);
   }
 
   @override
@@ -48,13 +44,13 @@ class _ExpenseInvoicePageState extends State<ExpenseInvoicePage> {
         child: ListView(
           children: [
             TextField(
-              controller: detailsController,
-              decoration: InputDecoration(labelText: 'تفاصيل المصاريف'),
+              controller: descriptionController,
+              decoration: InputDecoration(labelText: 'وصف المصروف', border: OutlineInputBorder()),
             ),
             SizedBox(height: 15),
             TextField(
               controller: amountController,
-              decoration: InputDecoration(labelText: 'المبلغ'),
+              decoration: InputDecoration(labelText: 'المبلغ', border: OutlineInputBorder()),
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 15),
@@ -67,10 +63,8 @@ class _ExpenseInvoicePageState extends State<ExpenseInvoicePage> {
             ElevatedButton(
               onPressed: submitExpense,
               child: Text('إرسال'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-              ),
-            )
+              style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 50)),
+            ),
           ],
         ),
       ),

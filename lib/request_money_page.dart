@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RequestMoneyPage extends StatefulWidget {
-  const RequestMoneyPage({Key? key}) : super(key: key);
+  @override
   _RequestMoneyPageState createState() => _RequestMoneyPageState();
 }
 
@@ -24,8 +24,6 @@ class _RequestMoneyPageState extends State<RequestMoneyPage> {
       );
       return;
     }
-
-    // إرسال الطلب إلى المسؤول
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('تم إرسال الطلب بنجاح')),
     );
@@ -43,36 +41,29 @@ class _RequestMoneyPageState extends State<RequestMoneyPage> {
             DropdownButtonFormField<String>(
               value: requestType,
               items: requestOptions
-                  .map((option) =>
-                      DropdownMenuItem(value: option, child: Text(option)))
+                  .map((opt) => DropdownMenuItem(value: opt, child: Text(opt)))
                   .toList(),
-              onChanged: (value) {
-                setState(() {
-                  requestType = value!;
-                });
-              },
-              decoration: InputDecoration(labelText: 'نوع الطلب'),
+              decoration: InputDecoration(labelText: 'نوع الطلب', border: OutlineInputBorder()),
+              onChanged: (val) => setState(() => requestType = val!),
             ),
             SizedBox(height: 15),
             TextField(
               controller: amountController,
-              decoration: InputDecoration(labelText: 'المبلغ'),
+              decoration: InputDecoration(labelText: 'المبلغ', border: OutlineInputBorder()),
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 15),
             TextField(
               controller: reasonController,
-              decoration: InputDecoration(labelText: 'السبب / ملاحظات'),
+              decoration: InputDecoration(labelText: 'السبب / ملاحظات', border: OutlineInputBorder()),
               maxLines: 3,
             ),
             SizedBox(height: 25),
             ElevatedButton(
               onPressed: submitRequest,
               child: Text('إرسال'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-              ),
-            )
+              style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 50)),
+            ),
           ],
         ),
       ),

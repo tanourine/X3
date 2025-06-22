@@ -1,30 +1,24 @@
 import 'package:flutter/material.dart';
 
 class LocationTrackingPage extends StatefulWidget {
-  const LocationTrackingPage({Key? key}) : super(key: key);
+  @override
   _LocationTrackingPageState createState() => _LocationTrackingPageState();
 }
 
 class _LocationTrackingPageState extends State<LocationTrackingPage> {
-  String selectedTechnician = 'محمد كاشف';
+  String selectedTech = 'محمد كاشف';
   String selectedDate = '2025-06-20';
 
-  final List<String> technicians = [
-    'محمد كاشف',
-    'علي عروس',
-    'فني جديد 1',
-    'فني جديد 2',
+  final List<String> techs = ['محمد كاشف', 'علي عروس'];
+  final List<Map<String, String>> locs = [
+    {'time': '09:00', 'loc': 'المنطقة الصناعية'},
+    {'time': '11:30', 'loc': 'الهيلي'},
+    {'time': '14:15', 'loc': 'زاخر'},
   ];
 
-  final List<Map<String, String>> locations = [
-    {'time': '09:00', 'location': 'منطقة الصناعية'},
-    {'time': '11:30', 'location': 'الهيلي'},
-    {'time': '14:15', 'location': 'زاخر'},
-  ];
-
-  void showOnMap(String location) {
+  void showMap(String place) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('عرض الموقع: $location (تمثيلي فقط)')),
+      SnackBar(content: Text('عرض $place على الخريطة')),
     );
   }
 
@@ -33,37 +27,32 @@ class _LocationTrackingPageState extends State<LocationTrackingPage> {
     return Scaffold(
       appBar: AppBar(title: Text('تتبع المواقع')),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
             DropdownButtonFormField<String>(
-              value: selectedTechnician,
-              items: technicians
-                  .map((tech) => DropdownMenuItem(value: tech, child: Text(tech)))
-                  .toList(),
-              onChanged: (val) => setState(() => selectedTechnician = val!),
+              value: selectedTech,
+              items: techs.map((t) => DropdownMenuItem(value: t, child: Text(t))).toList(),
               decoration: InputDecoration(labelText: 'اختر الفني'),
+              onChanged: (v) => setState(() => selectedTech = v!),
             ),
             SizedBox(height: 16),
             TextFormField(
               initialValue: selectedDate,
               decoration: InputDecoration(labelText: 'التاريخ (YYYY-MM-DD)'),
-              onChanged: (val) => selectedDate = val,
+              onChanged: (v) => selectedDate = v,
             ),
             SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: locations.length,
-                itemBuilder: (context, index) {
-                  final loc = locations[index];
+                itemCount: locs.length,
+                itemBuilder: (_, i) {
+                  final e = locs[i];
                   return ListTile(
                     leading: Icon(Icons.location_on),
-                    title: Text(loc['location']!),
-                    subtitle: Text('الوقت: ${loc['time']}'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.map),
-                      onPressed: () => showOnMap(loc['location']!),
-                    ),
+                    title: Text(e['loc']!),
+                    subtitle: Text('الوقت: ${e['time']}'),
+                    trailing: IconButton(icon: Icon(Icons.map), onPressed: () => showMap(e['loc']!)),
                   );
                 },
               ),

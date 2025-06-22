@@ -1,45 +1,42 @@
 import 'package:flutter/material.dart';
-
-// استورد كل صفحاتك هنا:
-import 'home_page.dart';
-import 'income_invoice_page.dart';
-import 'expense_invoice_page.dart';
-import 'request_money_page.dart';
-import 'tools_check_page.dart';
-import 'request_review_page.dart';
-import 'excel_export_page.dart';
-import 'warning_banner.dart';
-import 'upload_tools_images_page.dart';
-import 'location_tracking_page.dart';
+import 'drawer_menu.dart';
+import 'pages/login_page.dart';
+import 'pages/home_page.dart';
+import 'pages/income_invoice_page.dart';
+import 'pages/expense_invoice_page.dart';
+import 'pages/request_money_page.dart';
+import 'pages/tools_check_page.dart';
+import 'pages/request_review_page.dart';
+import 'pages/excel_export_page.dart';
+import 'pages/upload_tools_images_page.dart';
+import 'pages/tool_purchase_request_page.dart';
+import 'pages/location_tracking_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'تنورين للتكييف',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      initialRoute: '/home',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      initialRoute: '/',
       routes: {
-        '/home':              (c) => const HomePage(),
-        '/income':            (c) => const IncomeInvoicePage(),
-        '/expense':           (c) => const ExpenseInvoicePage(),
-        '/request-money':     (c) => const RequestMoneyPage(),
-        '/tools-check':       (c) => const ToolsCheckPage(),
-        '/money-review':      (c) => const RequestReviewPage(),
-        '/excel-export':      (c) => const ExcelExportPage(),
-        '/income-warning':    (c) => const WarningBannerPage(),
-        '/admin-tools':       (c) => const UploadToolsImagesPage(),
-        '/location-tracking': (c) => const LocationTrackingPage(),
+        '/': (ctx) => LoginPage(),
+        '/home': (ctx) => HomePage(),
+        '/income': (ctx) => IncomeInvoicePage(),
+        '/expense': (ctx) => ExpenseInvoicePage(),
+        '/request-money': (ctx) => RequestMoneyPage(),
+        '/tools-check': (ctx) => ToolsCheckPage(),
+        '/money-review': (ctx) => RequestReviewPage(),
+        '/excel-export': (ctx) => ExcelExportPage(),
+        '/admin-tools': (ctx) => UploadToolsImagesPage(),
+        '/purchase-request': (ctx) => ToolPurchaseRequestPage(toolName: ''),
+        '/location-tracking': (ctx) => LocationTrackingPage(),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }

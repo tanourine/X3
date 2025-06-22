@@ -3,44 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadToolsImagesPage extends StatefulWidget {
-  const UploadToolsImagesPage({Key? key}) : super(key: key);
-
   @override
-  State<UploadToolsImagesPage> createState() => _UploadToolsImagesPageState();
+  _UploadToolsImagesPageState createState() => _UploadToolsImagesPageState();
 }
 
 class _UploadToolsImagesPageState extends State<UploadToolsImagesPage> {
-  final List<Map<String, dynamic>> toolList = [];
-  final TextEditingController toolNameController = TextEditingController();
-  final ImagePicker picker = ImagePicker();
+  List<Map<String, dynamic>> tools = [];
+  final nameCtrl = TextEditingController();
+  final picker = ImagePicker();
 
-  @override
-  void dispose() {
-    toolNameController.dispose();
-    super.dispose();
+  Future<void> pickImage(int i) async {
+    final p = await picker.pickImage(source: ImageSource.camera);
+    if (p != null) setState(() => tools[i]['image'] = File(p.path));
   }
 
-  Future<void> pickImageForTool(int index) async {
-    final XFile? picked = await picker.pickImage(source: ImageSource.camera);
-    if (picked != null) {
-      setState(() {
-        toolList[index]['image'] = File(picked.path);
-      });
-    }
-  }
-
-  void addNewTool() {
-    final name = toolNameController.text.trim();
-    if (name.isEmpty) return;
+  void addTool() {
+    if (nameCtrl.text.trim().isEmpty) return;
     setState(() {
-      toolList.add({'name': name, 'image': null});
-      toolNameController.clear();
+      tools.add({'name': nameCtrl.text.trim(), 'image': null});
+      nameCtrl.clear();
     });
   }
 
-  void uploadTools() {
+  void uploadAll() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تم تحميل الأدوات بنجاح')),
+      SnackBar(content: Text('تم تحميل صور الأدوات')),
     );
     Navigator.pop(context);
   }
@@ -48,52 +35,34 @@ class _UploadToolsImagesPageState extends State<UploadToolsImagesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('تحميل أدوات العدة')),
+      appBar: AppBar(title: Text('تحميل صور الأدوات')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
-              controller: toolNameController,
-              decoration: InputDecoration(
-                labelText: 'اسم الأداة',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: addNewTool,
-                ),
-              ),
+              controller: nameCtrl,
+              decoration: InputDecoration(labelText: 'اسم الأداة'),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 10),
+            ElevatedButton(onPressed: addTool, child: Text('إضافة أداة')),
+            Divider(height: 30),
             Expanded(
               child: ListView.builder(
-                itemCount: toolList.length,
-                itemBuilder: (context, index) {
-                  final tool = toolList[index];
-                  final File? image = tool['image'];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: ListTile(
-                      title: Text(tool['name']),
-                      subtitle: image == null
-                          ? const Text('لم يتم اختيار صورة')
-                          : Image.file(image, height: 60),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.camera_alt),
-                        onPressed: () => pickImageForTool(index),
-                      ),
-                    ),
+                itemCount: tools.length,
+                itemBuilder: (_, i) {
+                  final t = tools[i];
+                  return ListTile(
+                    title: Text(t['name']),
+                    subtitle: t['image'] != null
+                        ? Image.file(t['image'], height: 60)
+                        : Text('لا توجد صورة'),
+                    trailing: IconButton(icon: Icon(Icons.camera_alt), onPressed: () => pickImage(i)),
                   );
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: uploadTools,
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-              ),
-              child: const Text('تحميل'),
-            ),
+            ElevatedButton(onPressed: uploadAll, child: Text('تحميل'), style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 50))),
           ],
         ),
       ),

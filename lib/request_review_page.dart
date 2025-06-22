@@ -1,94 +1,60 @@
 import 'package:flutter/material.dart';
 
 class RequestReviewPage extends StatefulWidget {
-  const RequestReviewPage({Key? key}) : super(key: key);
-
   @override
-  State<RequestReviewPage> createState() => _RequestReviewPageState();
+  _RequestReviewPageState createState() => _RequestReviewPageState();
 }
 
 class _RequestReviewPageState extends State<RequestReviewPage> {
   final List<Map<String, String>> requests = [
-    {
-      'name': 'محمد كاشف',
-      'amount': '300',
-      'type': 'طلب أموال كاش',
-      'status': 'بانتظار المراجعة',
-    },
-    {
-      'name': 'علي عروس',
-      'amount': '500',
-      'type': 'طلب تحويل أموال',
-      'status': 'بانتظار المراجعة',
-    },
+    {'name': 'محمد كاشف', 'type': 'طلب أموال كاش', 'amount': '300', 'status': 'بانتظار المراجعة'},
+    {'name': 'علي عروس', 'type': 'طلب تحويل أموال', 'amount': '500', 'status': 'بانتظار المراجعة'},
   ];
 
-  void approveRequest(int index) {
-    setState(() {
-      requests[index]['status'] = 'تمت الموافقة';
-    });
-  }
-
-  void rejectRequest(int index) {
-    setState(() {
-      requests[index]['status'] = 'مرفوض';
-    });
+  void updateStatus(int i, String newStatus) {
+    setState(() => requests[i]['status'] = newStatus);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('مراجعة طلبات الأموال'),
-      ),
+      appBar: AppBar(title: Text('مراجعة طلبات الأموال')),
       body: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         itemCount: requests.length,
-        itemBuilder: (context, index) {
-          final req = requests[index];
-          final status = req['status']!;
-          Color statusColor;
-          if (status == 'تمت الموافقة') {
-            statusColor = Colors.green;
-          } else if (status == 'مرفوض') {
-            statusColor = Colors.red;
-          } else {
-            statusColor = Colors.orange;
-          }
+        itemBuilder: (ctx, i) {
+          final r = requests[i];
           return Card(
-            margin: const EdgeInsets.only(bottom: 16),
+            margin: EdgeInsets.only(bottom: 16),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('الفني: ${req['name']}'),
-                  Text('النوع: ${req['type']}'),
-                  Text('المبلغ: ${req['amount']} درهم'),
-                  Text(
-                    'الحالة: $status',
-                    style: TextStyle(color: statusColor),
-                  ),
-                  const SizedBox(height: 10),
-                  if (status == 'بانتظار المراجعة')
+                  Text('الفني: ${r['name']}'),
+                  Text('النوع: ${r['type']}'),
+                  Text('المبلغ: ${r['amount']} درهم'),
+                  Text('الحالة: ${r['status']}',
+                      style: TextStyle(
+                        color: r['status'] == 'تمت الموافقة'
+                            ? Colors.green
+                            : r['status'] == 'مرفوض'
+                                ? Colors.red
+                                : Colors.orange,
+                      )),
+                  if (r['status'] == 'بانتظار المراجعة')
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ElevatedButton.icon(
-                          onPressed: () => approveRequest(index),
-                          icon: const Icon(Icons.check),
-                          label: const Text('موافقة'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                          ),
+                          onPressed: () => updateStatus(i, 'تمت الموافقة'),
+                          icon: Icon(Icons.check),
+                          label: Text('موافقة'),
                         ),
                         ElevatedButton.icon(
-                          onPressed: () => rejectRequest(index),
-                          icon: const Icon(Icons.close),
-                          label: const Text('رفض'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
+                          onPressed: () => updateStatus(i, 'مرفوض'),
+                          icon: Icon(Icons.close),
+                          label: Text('رفض'),
                         ),
                       ],
                     ),

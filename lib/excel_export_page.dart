@@ -1,33 +1,20 @@
 import 'package:flutter/material.dart';
 
 class ExcelExportPage extends StatefulWidget {
-  const ExcelExportPage({Key? key}) : super(key: key);
+  @override
   _ExcelExportPageState createState() => _ExcelExportPageState();
 }
 
 class _ExcelExportPageState extends State<ExcelExportPage> {
-  String selectedTechnician = 'محمد كاشف';
+  String selectedTech = 'محمد كاشف';
   String selectedMonth = 'يونيو 2025';
 
-  final List<String> technicians = [
-    'محمد كاشف',
-    'علي عروس',
-    'فني جديد 1',
-    'فني جديد 2',
-  ];
+  final List<String> technicians = ['محمد كاشف', 'علي عروس'];
+  final List<String> months = ['مايو 2025', 'يونيو 2025', 'يوليو 2025'];
 
-  final List<String> months = [
-    'يناير 2025',
-    'فبراير 2025',
-    'مارس 2025',
-    'أبريل 2025',
-    'مايو 2025',
-    'يونيو 2025',
-  ];
-
-  void generateExcel() {
+  void generate() {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('تم توليد ملف Excel وإرساله إلى قناة التليجرام')),
+      SnackBar(content: Text('تم توليد ملف Excel وإرساله')),
     );
     Navigator.pop(context);
   }
@@ -37,38 +24,28 @@ class _ExcelExportPageState extends State<ExcelExportPage> {
     return Scaffold(
       appBar: AppBar(title: Text('توليد ملفات Excel')),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
             DropdownButtonFormField<String>(
-              value: selectedTechnician,
-              items: technicians
-                  .map((tech) => DropdownMenuItem(
-                        value: tech,
-                        child: Text(tech),
-                      ))
-                  .toList(),
-              onChanged: (value) => setState(() => selectedTechnician = value!),
+              value: selectedTech,
+              items: technicians.map((t) => DropdownMenuItem(value: t, child: Text(t))).toList(),
               decoration: InputDecoration(labelText: 'اختر الفني'),
+              onChanged: (v) => setState(() => selectedTech = v!),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: selectedMonth,
-              items: months
-                  .map((month) => DropdownMenuItem(
-                        value: month,
-                        child: Text(month),
-                      ))
-                  .toList(),
-              onChanged: (value) => setState(() => selectedMonth = value!),
+              items: months.map((m) => DropdownMenuItem(value: m, child: Text(m))).toList(),
               decoration: InputDecoration(labelText: 'اختر الشهر'),
+              onChanged: (v) => setState(() => selectedMonth = v!),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 24),
             ElevatedButton(
-              onPressed: generateExcel,
-              child: Text('توليد الملف'),
+              onPressed: generate,
+              child: Text('توليد ملف'),
               style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 50)),
-            )
+            ),
           ],
         ),
       ),

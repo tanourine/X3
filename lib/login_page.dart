@@ -4,6 +4,10 @@ class LoginPage extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  void _login(BuildContext ctx) {
+    Navigator.pushReplacementNamed(ctx, '/home');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,9 +18,11 @@ class LoginPage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Icon(Icons.ac_unit, size: 80, color: Colors.blue[800]),
+                Image.asset('assets/logo.png', height: 80),
                 SizedBox(height: 20),
-                Text("تنورين للتكييف", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text("تنورين للتكييف",
+                    style:
+                        TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
                 SizedBox(height: 30),
                 TextField(
                   controller: usernameController,
@@ -36,9 +42,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/home');
-                  },
+                  onPressed: () => _login(context),
                   child: Text('تسجيل الدخول'),
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 50),
