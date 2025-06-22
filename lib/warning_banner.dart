@@ -1,34 +1,44 @@
 import 'package:flutter/material.dart';
 
-class IncomeWarningBanner extends StatelessWidget {
-  const WarningBannerPage({Key? key}) : super(key: key);
+/// صفحتك لتنبيه الإيرادات
+/// اضفنا هنا كونستركتور const يطابق اسم الكلاس
+class WarningBannerPage extends StatelessWidget {
+  /// اسـم الفني (يمكن تركه افتراضياً)
   final String technicianName;
+
+  /// هل نظهر التنبيه أم لا (يمكن تركه افتراضياً)
   final bool showWarning;
 
-  const IncomeWarningBanner({
+  const WarningBannerPage({
     Key? key,
-    required this.technicianName,
-    required this.showWarning,
+    this.technicianName = '',
+    this.showWarning = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (!showWarning) return SizedBox.shrink();
+    // إذا غير مطلوب عرض التنبيه نعيد صفحة فارغة
+    if (!showWarning) {
+      return const SizedBox.shrink();
+    }
 
-    return Container(
-      color: Colors.yellow[700],
-      padding: EdgeInsets.all(12),
-      child: Row(
-        children: [
-          Icon(Icons.warning, color: Colors.black),
-          SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              '⚠️ عدد فواتير الإيرادات غير مطابق لعدد الطلبات المنفذة للفني "$technicianName"',
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('تنبيه الإيرادات')),
+      body: Center(
+        child: MaterialBanner(
+          content: Text(
+            'تنبيه! هنالك مشكلة لدى الفني $technicianName',
+            style: const TextStyle(color: Colors.red),
           ),
-        ],
+          actions: [
+            TextButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).clearMaterialBanners();
+              },
+              child: const Text('حسناً'),
+            ),
+          ],
+        ),
       ),
     );
   }
