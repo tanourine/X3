@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         '/money-review':      (c) => const RequestReviewPage(),
         '/excel-export':      (c) => const ExcelExportPage(),
         '/income-warning':    (c) => const WarningBannerPage(),
-        '/admin-tools':       (c) => const AdminToolsUploadPage(),
+        '/admin-tools':       (c) => const UploadToolsImagesPage(),
         '/location-tracking': (c) => const LocationTrackingPage(),
       },
     );
