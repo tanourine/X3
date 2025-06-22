@@ -2,20 +2,26 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+class UploadToolsImagesPage extends StatefulWidget {
+  const UploadToolsImagesPage({Key? key}) : super(key: key);
 
-
-class AdminToolsUploadPage extends StatefulWidget {
   @override
-  _AdminToolsUploadPageState createState() => _AdminToolsUploadPageState();
+  State<UploadToolsImagesPage> createState() => _UploadToolsImagesPageState();
 }
 
-class _AdminToolsUploadPageState extends State<AdminToolsUploadPage> {
-  List<Map<String, dynamic>> toolList = [];
+class _UploadToolsImagesPageState extends State<UploadToolsImagesPage> {
+  final List<Map<String, dynamic>> toolList = [];
   final TextEditingController toolNameController = TextEditingController();
-  final picker = ImagePicker();
+  final ImagePicker picker = ImagePicker();
+
+  @override
+  void dispose() {
+    toolNameController.dispose();
+    super.dispose();
+  }
 
   Future<void> pickImageForTool(int index) async {
-    final picked = await picker.pickImage(source: ImageSource.camera);
+    final XFile? picked = await picker.pickImage(source: ImageSource.camera);
     if (picked != null) {
       setState(() {
         toolList[index]['image'] = File(picked.path);
@@ -24,20 +30,17 @@ class _AdminToolsUploadPageState extends State<AdminToolsUploadPage> {
   }
 
   void addNewTool() {
-    if (toolNameController.text.trim().isEmpty) return;
+    final name = toolNameController.text.trim();
+    if (name.isEmpty) return;
     setState(() {
-      toolList.add({
-        'name': toolNameController.text.trim(),
-        'image': null,
-      });
+      toolList.add({'name': name, 'image': null});
       toolNameController.clear();
     });
   }
 
   void uploadTools() {
-    // عملية الإرسال إلى تيليجرام (تمثيليًا)
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('تم تحميل الأدوات بنجاح')),
+      const SnackBar(content: Text('تم تحميل الأدوات بنجاح')),
     );
     Navigator.pop(context);
   }
@@ -45,9 +48,9 @@ class _AdminToolsUploadPageState extends State<AdminToolsUploadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('تحميل أدوات العدة')),
+      appBar: AppBar(title: const Text('تحميل أدوات العدة')),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
@@ -55,25 +58,27 @@ class _AdminToolsUploadPageState extends State<AdminToolsUploadPage> {
               decoration: InputDecoration(
                 labelText: 'اسم الأداة',
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: addNewTool,
                 ),
               ),
             ),
+            const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: toolList.length,
                 itemBuilder: (context, index) {
                   final tool = toolList[index];
+                  final File? image = tool['image'];
                   return Card(
-                    margin: EdgeInsets.symmetric(vertical: 8),
+                    margin: const EdgeInsets.symmetric(vertical: 8),
                     child: ListTile(
                       title: Text(tool['name']),
-                      subtitle: tool['image'] == null
-                          ? Text('لم يتم اختيار صورة')
-                          : Image.file(tool['image'], height: 60),
+                      subtitle: image == null
+                          ? const Text('لم يتم اختيار صورة')
+                          : Image.file(image, height: 60),
                       trailing: IconButton(
-                        icon: Icon(Icons.camera_alt),
+                        icon: const Icon(Icons.camera_alt),
                         onPressed: () => pickImageForTool(index),
                       ),
                     ),
@@ -83,8 +88,11 @@ class _AdminToolsUploadPageState extends State<AdminToolsUploadPage> {
             ),
             ElevatedButton(
               onPressed: uploadTools,
-              child: Text('تحميل'),
-              style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 50)),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+              ),
+              child: const Text('تحميل'),
             ),
           ],
         ),

@@ -26,9 +26,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      // نحدد الصفحة الابتدائية
       initialRoute: '/home',
-      // هنا خرائط الأسماء إلى الصفحات
       routes: {
         '/home': (context) => const HomePage(),
         '/income': (context) => const IncomeInvoicePage(),
@@ -54,8 +52,6 @@ class HomePage extends StatelessWidget {
         title: const Text('الصفحة الرئيسية'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-
-      // نرسم الـ Drawer مباشرة هنا
       drawer: Drawer(
         child: ListView(
           children: [
@@ -80,7 +76,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-
       body: const Center(
         child: Text('مرحباً بك في تطبيق تنورين للتكييف'),
       ),
@@ -91,8 +86,8 @@ class HomePage extends StatelessWidget {
     return ListTile(
       title: Text(title, textAlign: TextAlign.right),
       onTap: () {
-        Navigator.pop(context);               // يغلق الـ Drawer
-        Navigator.pushNamed(context, route);  // ينتقل إلى الصفحة المطلوبة
+        Navigator.pop(context);
+        Navigator.pushNamed(context, route);
       },
     );
   }

@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 
 class RequestReviewPage extends StatefulWidget {
+  const RequestReviewPage({Key? key}) : super(key: key);
+
   @override
-  _RequestReviewPageState createState() => _RequestReviewPageState();
+  State<RequestReviewPage> createState() => _RequestReviewPageState();
 }
 
 class _RequestReviewPageState extends State<RequestReviewPage> {
-  final List<Map<String, dynamic>> requests = [
+  final List<Map<String, String>> requests = [
     {
       'name': 'محمد كاشف',
       'amount': '300',
       'type': 'طلب أموال كاش',
-      'status': 'بانتظار المراجعة'
+      'status': 'بانتظار المراجعة',
     },
     {
       'name': 'علي عروس',
       'amount': '500',
       'type': 'طلب تحويل أموال',
-      'status': 'بانتظار المراجعة'
+      'status': 'بانتظار المراجعة',
     },
   ];
 
@@ -36,12 +38,23 @@ class _RequestReviewPageState extends State<RequestReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('مراجعة طلبات الأموال')),
+      appBar: AppBar(
+        title: const Text('مراجعة طلبات الأموال'),
+      ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: requests.length,
         itemBuilder: (context, index) {
-          final request = requests[index];
+          final req = requests[index];
+          final status = req['status']!;
+          Color statusColor;
+          if (status == 'تمت الموافقة') {
+            statusColor = Colors.green;
+          } else if (status == 'مرفوض') {
+            statusColor = Colors.red;
+          } else {
+            statusColor = Colors.orange;
+          }
           return Card(
             margin: const EdgeInsets.only(bottom: 16),
             child: Padding(
@@ -49,36 +62,36 @@ class _RequestReviewPageState extends State<RequestReviewPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('الفني: ${request['name']}'),
-                  Text('النوع: ${request['type']}'),
-                  Text('المبلغ: ${request['amount']} درهم'),
-                  Text('الحالة: ${request['status']}',
-                      style: TextStyle(
-                        color: request['status'] == 'تمت الموافقة'
-                            ? Colors.green
-                            : request['status'] == 'مرفوض'
-                                ? Colors.red
-                                : Colors.orange,
-                      )),
-                  SizedBox(height: 10),
-                  if (request['status'] == 'بانتظار المراجعة')
+                  Text('الفني: ${req['name']}'),
+                  Text('النوع: ${req['type']}'),
+                  Text('المبلغ: ${req['amount']} درهم'),
+                  Text(
+                    'الحالة: $status',
+                    style: TextStyle(color: statusColor),
+                  ),
+                  const SizedBox(height: 10),
+                  if (status == 'بانتظار المراجعة')
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ElevatedButton.icon(
                           onPressed: () => approveRequest(index),
-                          icon: Icon(Icons.check),
-                          label: Text('موافقة'),
-                          style: ElevatedButton.styleFrom(primary: Colors.green),
+                          icon: const Icon(Icons.check),
+                          label: const Text('موافقة'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                          ),
                         ),
                         ElevatedButton.icon(
                           onPressed: () => rejectRequest(index),
-                          icon: Icon(Icons.close),
-                          label: Text('رفض'),
-                          style: ElevatedButton.styleFrom(primary: Colors.red),
+                          icon: const Icon(Icons.close),
+                          label: const Text('رفض'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
                         ),
                       ],
-                    )
+                    ),
                 ],
               ),
             ),
