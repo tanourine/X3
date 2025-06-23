@@ -2,53 +2,59 @@ import 'package:flutter/material.dart';
 
 class ToolPurchaseRequestPage extends StatefulWidget {
   final String toolName;
-  const ToolPurchaseRequestPage({Key? key, required this.toolName}) : super(key: key);
+  const ToolPurchaseRequestPage({super.key, required this.toolName});
 
   @override
-  _ToolPurchaseRequestPageState createState() => _ToolPurchaseRequestPageState();
+  _ToolPurchaseRequestPageState createState() =>
+      _ToolPurchaseRequestPageState();
 }
 
 class _ToolPurchaseRequestPageState extends State<ToolPurchaseRequestPage> {
-  String reason = 'مفقودة';
-  final noteCtrl = TextEditingController();
+  String _reason = 'مفقودة';
+  final _noteCtrl = TextEditingController();
 
-  void submit() {
-    if (noteCtrl.text.isEmpty) {
+  void _submit() {
+    if (_noteCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('يرجى كتابة سبب')),
-      );
+          const SnackBar(content: Text('يرجى كتابة سبب')));
       return;
     }
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('تم إرسال طلب الشراء')),
-    );
+        const SnackBar(content: Text('تم إرسال طلب الشراء')));
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('طلب شراء أداة')),
+      appBar: AppBar(title: const Text('طلب شراء أداة')),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Text('الأداة: ${widget.toolName}'),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             DropdownButtonFormField<String>(
-              value: reason,
-              items: ['مفقودة', 'تحتاج صيانة'].map((r) => DropdownMenuItem(value: r, child: Text(r))).toList(),
-              onChanged: (v) => setState(() => reason = v!),
-              decoration: InputDecoration(labelText: 'السبب'),
+              value: _reason,
+              decoration: const InputDecoration(labelText: 'السبب'),
+              items: ['مفقودة', 'تحتاج صيانة']
+                  .map((r) => DropdownMenuItem(value: r, child: Text(r)))
+                  .toList(),
+              onChanged: (v) => setState(() => _reason = v!),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
-              controller: noteCtrl,
-              decoration: InputDecoration(labelText: 'ملاحظات إضافية'),
+              controller: _noteCtrl,
+              decoration: const InputDecoration(labelText: 'ملاحظات إضافية'),
               maxLines: 3,
             ),
-            SizedBox(height: 30),
-            ElevatedButton(onPressed: submit, child: Text('إرسال الطلب'), style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 50))),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50)),
+              onPressed: _submit,
+              child: const Text('إرسال الطلب'),
+            ),
           ],
         ),
       ),

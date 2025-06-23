@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tanourine_app/warning_banner.dart';
+import '../warning_banner.dart';
 
-class IncomeWarningBanner extends StatelessWidget {
+class IncomeInvoicePage extends StatefulWidget {
+  const IncomeInvoicePage({super.key});
   @override
   _IncomeInvoicePageState createState() => _IncomeInvoicePageState();
 }
@@ -14,10 +15,11 @@ class _IncomeInvoicePageState extends State<IncomeInvoicePage> {
 
   Future<void> _pickDate() async {
     final d = await showDatePicker(
-        context: context,
-        initialDate: _date,
-        firstDate: DateTime(2023),
-        lastDate: DateTime(2100));
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2100),
+    );
     if (d != null) setState(() => _date = d);
   }
 
@@ -26,58 +28,59 @@ class _IncomeInvoicePageState extends State<IncomeInvoicePage> {
         _invoiceCtrl.text.isEmpty ||
         _amountCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('يرجى إدخال جميع الحقول')));
+          const SnackBar(content: Text('يرجى إدخال جميع الحقول')));
       return;
     }
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('تم رفع فاتورة الدخل')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('تم رفع فاتورة الدخل')));
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('رفع فاتورة دخل')),
+      appBar: AppBar(title: const Text('رفع فاتورة دخل')),
       body: Column(
         children: [
-          IncomeWarningBanner(
+          const IncomeWarningBanner(
             technicianName: 'محمد كاشف',
             showWarning: true,
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: ListView(
                 children: [
                   TextField(
                     controller: _clientCtrl,
-                    decoration: InputDecoration(labelText: 'اسم العميل'),
+                    decoration:
+                        const InputDecoration(labelText: 'اسم العميل'),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   TextField(
                     controller: _invoiceCtrl,
-                    decoration: InputDecoration(labelText: 'رقم الفاتورة'),
+                    decoration:
+                        const InputDecoration(labelText: 'رقم الفاتورة'),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   TextField(
                     controller: _amountCtrl,
-                    decoration: InputDecoration(labelText: 'المبلغ'),
+                    decoration: const InputDecoration(labelText: 'المبلغ'),
                     keyboardType: TextInputType.number,
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   ListTile(
-                    title:
-                        Text('التاريخ: ${_date.toLocal()}'.split(' ')[0]),
-                    trailing: Icon(Icons.calendar_today),
+                    title: Text('التاريخ: ${_date.toLocal()}'.split(' ')[0]),
+                    trailing: const Icon(Icons.calendar_today),
                     onTap: _pickDate,
                   ),
-                  SizedBox(height: 25),
+                  const SizedBox(height: 25),
                   ElevatedButton(
                     onPressed: _submit,
-                    child: Text('إرسال'),
                     style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 50)),
-                  )
+                        minimumSize: const Size.fromHeight(50)),
+                    child: const Text('إرسال'),
+                  ),
                 ],
               ),
             ),

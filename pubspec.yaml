@@ -1,5 +1,5 @@
 name: tanourine_app
-description: تطبيق تنورين للتكييف - فواتير، تتبع، أدوات، والمزيد.
+description: تطبيق تنورين للتكييف – فواتير، طلبات أموال، تشييك، وتتبع.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -10,9 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  image_picker: ^1.0.7
+  image_picker: ^0.8.7+3
   http: ^0.13.6
-  path_provider: ^2.1.2
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:
@@ -20,6 +20,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
   assets:
     - assets/logo.png

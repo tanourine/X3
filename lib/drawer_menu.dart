@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 
 class DrawerMenu extends StatelessWidget {
-  final String userType; // "مدير" أو "فني"
-  final Function(String) onItemSelected;
+  final String userType; // 'مدير' أو 'فني'
+  final void Function(String) onItemSelected;
 
   const DrawerMenu({
-    Key? key,
+    super.key,
     required this.userType,
     required this.onItemSelected,
-  }) : super(key: key);
+  });
 
-  Widget _buildItem(BuildContext ctx, String title, String route) {
+  ListTile _item(BuildContext ctx, String title, String route) {
     return ListTile(
       title: Text(title, textAlign: TextAlign.right),
-      onTap: () => onItemSelected(route),
+      onTap: () {
+        Navigator.pop(ctx);
+        onItemSelected(route);
+      },
     );
   }
 
@@ -23,22 +26,24 @@ class DrawerMenu extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
+            decoration: const BoxDecoration(color: Colors.blue),
             child: Center(
-              child: Text('تنورين للتكييف',
-                  style: TextStyle(color: Colors.white, fontSize: 24)),
+              child: Text(
+                'تنورين للتكييف',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
             ),
           ),
-          _buildItem(context, 'الرئيسية', '/home'),
-          _buildItem(context, 'رفع فاتورة دخل', '/income'),
-          _buildItem(context, 'رفع فاتورة مصاريف', '/expense'),
-          _buildItem(context, 'طلب أموال', '/request-money'),
-          _buildItem(context, 'تشييك العدة', '/tools-check'),
+          _item(context, 'الرئيسية', '/home'),
+          _item(context, 'رفع فاتورة دخل', '/income'),
+          _item(context, 'رفع فاتورة مصاريف', '/expense'),
+          _item(context, 'طلب أموال', '/request-money'),
+          _item(context, 'تشييك العدة', '/tools-check'),
           if (userType == 'مدير') ...[
-            _buildItem(context, 'مراجعة طلبات الأموال', '/money-review'),
-            _buildItem(context, 'توليد ملفات Excel', '/excel-export'),
-            _buildItem(context, 'تحميل صور الأدوات', '/admin-tools'),
-            _buildItem(context, 'تتبع المواقع', '/location-tracking'),
+            _item(context, 'مراجعة طلبات الأموال', '/money-review'),
+            _item(context, 'توليد ملفات Excel', '/excel-export'),
+            _item(context, 'تحميل صور الأدوات', '/admin-tools'),
+            _item(context, 'تتبع المواقع', '/location-tracking'),
           ],
         ],
       ),

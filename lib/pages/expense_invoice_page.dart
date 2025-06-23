@@ -1,69 +1,68 @@
 import 'package:flutter/material.dart';
 
 class ExpenseInvoicePage extends StatefulWidget {
+  const ExpenseInvoicePage({super.key});
   @override
   _ExpenseInvoicePageState createState() => _ExpenseInvoicePageState();
 }
 
 class _ExpenseInvoicePageState extends State<ExpenseInvoicePage> {
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController amountController = TextEditingController();
-  DateTime selectedDate = DateTime.now();
+  final _descCtrl = TextEditingController();
+  final _amountCtrl = TextEditingController();
+  DateTime _date = DateTime.now();
 
-  Future<void> pickDate() async {
-    DateTime? date = await showDatePicker(
+  Future<void> _pickDate() async {
+    final d = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: _date,
       firstDate: DateTime(2023),
       lastDate: DateTime(2100),
     );
-    if (date != null) {
-      setState(() => selectedDate = date);
-    }
+    if (d != null) setState(() => _date = d);
   }
 
-  void submitExpense() {
-    if (descriptionController.text.isEmpty || amountController.text.isEmpty) {
+  void _submit() {
+    if (_descCtrl.text.isEmpty || _amountCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('يرجى تعبئة كل الحقول')),
-      );
+          const SnackBar(content: Text('يرجى تعبئة كل الحقول')));
       return;
     }
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('تم رفع فاتورة المصاريف بنجاح')),
-    );
+        const SnackBar(content: Text('تم رفع فاتورة المصاريف')));
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('رفع فاتورة مصاريف')),
+      appBar: AppBar(title: const Text('رفع فاتورة مصاريف')),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20),
         child: ListView(
           children: [
             TextField(
-              controller: descriptionController,
-              decoration: InputDecoration(labelText: 'وصف المصروف', border: OutlineInputBorder()),
+              controller: _descCtrl,
+              decoration:
+                  const InputDecoration(labelText: 'وصف المصروف'),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             TextField(
-              controller: amountController,
-              decoration: InputDecoration(labelText: 'المبلغ', border: OutlineInputBorder()),
+              controller: _amountCtrl,
+              decoration: const InputDecoration(labelText: 'المبلغ'),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             ListTile(
-              title: Text("التاريخ: ${selectedDate.toLocal()}".split(' ')[0]),
-              trailing: Icon(Icons.calendar_today),
-              onTap: pickDate,
+              title: Text('التاريخ: ${_date.toLocal()}'.split(' ')[0]),
+              trailing: const Icon(Icons.calendar_today),
+              onTap: _pickDate,
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             ElevatedButton(
-              onPressed: submitExpense,
-              child: Text('إرسال'),
-              style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 50)),
+              onPressed: _submit,
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50)),
+              child: const Text('إرسال'),
             ),
           ],
         ),

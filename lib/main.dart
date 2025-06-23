@@ -13,30 +13,31 @@ import 'pages/tool_purchase_request_page.dart';
 import 'pages/location_tracking_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'تنورين للتكييف',
       theme: ThemeData(primarySwatch: Colors.blue),
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (ctx) => LoginPage(),
-        '/home': (ctx) => HomePage(),
-        '/income': (ctx) => IncomeInvoicePage(),
-        '/expense': (ctx) => ExpenseInvoicePage(),
-        '/request-money': (ctx) => RequestMoneyPage(),
-        '/tools-check': (ctx) => ToolsCheckPage(),
-        '/money-review': (ctx) => RequestReviewPage(),
-        '/excel-export': (ctx) => ExcelExportPage(),
-        '/admin-tools': (ctx) => UploadToolsImagesPage(),
-        '/purchase-request': (ctx) => ToolPurchaseRequestPage(toolName: ''),
-        '/location-tracking': (ctx) => LocationTrackingPage(),
+        '/':           (_) => const LoginPage(),
+        '/home':       (_) => const HomePage(),
+        '/income':     (_) => const IncomeInvoicePage(),
+        '/expense':    (_) => const ExpenseInvoicePage(),
+        '/request-money':    (_) => const RequestMoneyPage(),
+        '/tools-check':      (_) => const ToolsCheckPage(),
+        '/money-review':     (_) => const RequestReviewPage(),
+        '/excel-export':     (_) => const ExcelExportPage(),
+        '/admin-tools':      (_) => const UploadToolsImagesPage(),
+        '/purchase-request': (_) => const ToolPurchaseRequestPage(toolName: ''),
+        '/location-tracking':(_) => const LocationTrackingPage(),
       },
-      debugShowCheckedModeBanner: false,
     );
   }
 }

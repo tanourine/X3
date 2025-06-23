@@ -1,52 +1,45 @@
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-  void _login(BuildContext ctx) {
-    Navigator.pushReplacementNamed(ctx, '/home');
-  }
-
+  const LoginPage({super.key});
   @override
   Widget build(BuildContext context) {
+    final userCtrl = TextEditingController();
+    final passCtrl = TextEditingController();
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
                 Image.asset('assets/logo.png', height: 80),
-                SizedBox(height: 20),
-                Text("تنورين للتكييف",
+                const SizedBox(height: 20),
+                const Text('تنورين للتكييف',
                     style:
                         TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 TextField(
-                  controller: usernameController,
-                  decoration: InputDecoration(
-                    labelText: 'اسم المستخدم',
-                    border: OutlineInputBorder(),
-                  ),
+                  controller: userCtrl,
+                  decoration: const InputDecoration(
+                      labelText: 'اسم المستخدم', border: OutlineInputBorder()),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 TextField(
-                  controller: passwordController,
+                  controller: passCtrl,
                   obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'كلمة المرور',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: const InputDecoration(
+                      labelText: 'كلمة المرور', border: OutlineInputBorder()),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () => _login(context),
-                  child: Text('تسجيل الدخول'),
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
+                    minimumSize: const Size.fromHeight(50),
                   ),
+                  onPressed: () =>
+                      Navigator.pushReplacementNamed(context, '/home'),
+                  child: const Text('تسجيل الدخول'),
                 ),
               ],
             ),

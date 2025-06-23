@@ -3,87 +3,82 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ToolsCheckPage extends StatefulWidget {
+  const ToolsCheckPage({super.key});
   @override
   _ToolsCheckPageState createState() => _ToolsCheckPageState();
 }
 
 class _ToolsCheckPageState extends State<ToolsCheckPage> {
-  final List<Map<String, dynamic>> tools = [
+  final _picker = ImagePicker();
+  final List<Map<String, dynamic>> _tools = [
     {'name': 'مفك براغي', 'status': null, 'image': null},
     {'name': 'كماشة', 'status': null, 'image': null},
     {'name': 'متر قياس', 'status': null, 'image': null},
     {'name': 'مفتاح إنجليزي', 'status': null, 'image': null},
   ];
-  final picker = ImagePicker();
 
-  Future<void> pickImage(int idx) async {
-    final picked = await picker.pickImage(source: ImageSource.camera);
-    if (picked != null) setState(() => tools[idx]['image'] = File(picked.path));
+  Future<void> _pickImage(int i) async {
+    final img = await _picker.pickImage(source: ImageSource.camera);
+    if (img != null) setState(() => _tools[i]['image'] = File(img.path));
   }
 
-  void submitCheck() {
-    if (tools.any((t) => t['status'] == null)) {
+  void _submit() {
+    if (_tools.any((t) => t['status'] == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('يرجى فحص جميع الأدوات')),
-      );
+          const SnackBar(content: Text('يرجى فحص جميع الأدوات')));
       return;
     }
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('تم إرسال تشييك العدة')),
-    );
+        const SnackBar(content: Text('تم إرسال التشييك')));
     Navigator.pop(context);
-  }
-
-  Widget statusChips(int idx) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        ChoiceChip(
-          label: Text('✅'),
-          selected: tools[idx]['status'] == 'ok',
-          onSelected: (_) => setState(() => tools[idx]['status'] = 'ok'),
-        ),
-        ChoiceChip(
-          label: Text('⚠️'),
-          selected: tools[idx]['status'] == 'maintenance',
-          onSelected: (_) => setState(() => tools[idx]['status'] = 'maintenance'),
-        ),
-        ChoiceChip(
-          label: Text('❌'),
-          selected: tools[idx]['status'] == 'missing',
-          onSelected: (_) => setState(() => tools[idx]['status'] = 'missing'),
-        ),
-      ],
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('تشييك العدة')),
+      appBar: AppBar(title: const Text('تشييك العدة')),
       body: ListView.builder(
-        padding: EdgeInsets.all(16),
-        itemCount: tools.length,
-        itemBuilder: (ctx, idx) {
-          final t = tools[idx];
+        padding: const EdgeInsets.all(16),
+        itemCount: _tools.length,
+        itemBuilder: (_, i) {
+          final t = _tools[i];
           return Card(
-            margin: EdgeInsets.only(bottom: 20),
+            margin: const EdgeInsets.only(bottom: 16),
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(t['name'], style: TextStyle(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  statusChips(idx),
-                  SizedBox(height: 10),
-                  t['image'] != null
-                      ? Image.file(File(t['image']), height: 100)
-                      : Text('لم يتم اختيار صورة'),
+                  Text(t['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ChoiceChip(
+                        label: const Text('✅'),
+                        selected: t['status']=='ok',
+                        onSelected: (_) => setState(()=>t['status']='ok'),
+                      ),
+                      ChoiceChip(
+                        label: const Text('⚠️'),
+                        selected: t['status']=='maintenance',
+                        onSelected: (_) => setState(()=>t['status']='maintenance'),
+                      ),
+                      ChoiceChip(
+                        label: const Text('❌'),
+                        selected: t['status']=='missing',
+                        onSelected: (_) => setState(()=>t['status']='missing'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  t['image']!=null
+                      ? Image.file(t['image'], height: 100)
+                      : const Text('لم يتم اختيار صورة'),
                   TextButton.icon(
-                    onPressed: () => pickImage(idx),
-                    icon: Icon(Icons.camera_alt),
-                    label: Text('التقاط صورة'),
+                    onPressed: () => _pickImage(i),
+                    icon: const Icon(Icons.camera_alt),
+                    label: const Text('التقاط صورة'),
                   ),
                 ],
               ),
@@ -92,11 +87,11 @@ class _ToolsCheckPageState extends State<ToolsCheckPage> {
         },
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: ElevatedButton(
-          onPressed: submitCheck,
-          child: Text('إرسال التشييك'),
-          style: ElevatedButton.styleFrom(minimumSize: Size(double.infinity, 50)),
+          style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+          onPressed: _submit,
+          child: const Text('إرسال التشييك'),
         ),
       ),
     );
